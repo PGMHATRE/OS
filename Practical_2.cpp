@@ -380,3 +380,82 @@ int main() {
 
     return 0;
 }
+//priority preemtive
+
+#include <iostream>
+using namespace std;
+
+class Process {
+public:
+    int pid;
+    int arrival_time;
+    int burst_time;
+    int remaining_time;
+    int priority;
+    bool completed;
+};
+
+int main() {
+    const int n = 5;
+    Process p[n];
+
+    // Input
+    for (int i = 0; i < n; i++) {
+        cout << "Enter PID, Arrival Time, Burst Time, and Priority for process " << i + 1 << ": ";
+        cin >> p[i].pid >> p[i].arrival_time >> p[i].burst_time >> p[i].priority;
+        p[i].remaining_time = p[i].burst_time;
+        p[i].completed = false;
+    }
+
+    int time = 0, completed = 0;
+    int ct[n], tat[n], wt[n];
+
+    while (completed < n) {
+        int idx = -1;
+        int min_priority = 1e9;
+
+        // Select process with highest priority (lowest value), if arrived and not completed
+        for (int i = 0; i < n; i++) {
+            if (!p[i].completed && p[i].arrival_time <= time && p[i].remaining_time > 0 && p[i].priority < min_priority) {
+                min_priority = p[i].priority;
+                idx = i;
+            }
+        }
+
+        if (idx != -1) {
+            // Execute process for 1 unit
+            p[idx].remaining_time--;
+            time++;
+
+            // Completion check
+            if (p[idx].remaining_time == 0) {
+                p[idx].completed = true;
+                ct[idx] = time;
+                completed++;
+            }
+        } else {
+            time++; // Idle
+        }
+    }
+
+    float total_tat = 0, total_wt = 0;
+
+    for (int i = 0; i < n; i++) {
+        tat[i] = ct[i] - p[i].arrival_time;
+        wt[i] = tat[i] - p[i].burst_time;
+        total_tat += tat[i];
+        total_wt += wt[i];
+    }
+
+    // Output
+    cout << "\nPID\tAT\tBT\tPriority\tCT\tTAT\tWT\n";
+    for (int i = 0; i < n; i++) {
+        cout << p[i].pid << "\t" << p[i].arrival_time << "\t" << p[i].burst_time << "\t"
+             << p[i].priority << "\t\t" << ct[i] << "\t" << tat[i] << "\t" << wt[i] << "\n";
+    }
+
+    cout << "\nAverage Turnaround Time: " << total_tat / n << endl;
+    cout << "Average Waiting Time   : " << total_wt / n << endl;
+
+    return 0;
+}
