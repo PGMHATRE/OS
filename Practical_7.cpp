@@ -1,3 +1,122 @@
+// void lru(vector<int>& pages, int framesize)
+// {
+//     int index = -1;
+//     vector<int> frame;
+//     int pagefault = 0;
+
+//     for(int i = 0; i < pages.size(); i++)
+//     {
+//         bool found = false;
+
+//         for(int j = 0; j < frame.size(); j++)  // fixed loop condition
+//         {
+//             if(frame[j] == pages[i])
+//             {
+//                 found = true;
+//                 index = j;
+//                 break;
+//             }
+//         }
+
+//         if(found)
+//         {
+//             int recent = frame[index];
+//             frame.erase(frame.begin() + index);
+//             frame.push_back(recent);
+//         }
+//         else
+//         {
+//             pagefault++;
+//             if(frame.size() == framesize)
+//             {
+//                 frame.erase(frame.begin());
+//             }
+//             frame.push_back(pages[i]);
+//         }
+
+//         for(int k = 0; k < frame.size(); k++)
+//         {
+//             cout << frame[k] << " ";
+//         }
+//         cout << endl;
+//     }
+
+//     cout << "page fault: " << pagefault << endl;
+// }
+
+
+
+
+// void optimal(vector<int>& pages, int framesize)
+// {
+//     vector<int> frame;
+//     int pagefault = 0;
+
+//     for(int i = 0; i < pages.size(); i++)
+//     {
+//         bool found = false;
+
+//         for(int j = 0; j < frame.size(); j++)
+//         {
+//             if(pages[i] == frame[j])
+//             {
+//                 found = true;
+//                 break;
+//             }
+//         }
+
+//         if(!found)
+//         {
+//             pagefault++;
+
+//             if(frame.size() == framesize) // 🛠 Only replace if frame is full
+//             {
+//                 int index = -1;
+//                 int far = i + 1;
+
+//                 for(int j = 0; j < frame.size(); j++)
+//                 { 
+//                     int k;
+//                     for(k = i + 1; k < pages.size(); k++)
+//                     {
+//                         if(pages[k] == frame[j])
+//                             break;
+//                     }
+
+//                     if(k == pages.size())
+//                     {
+//                         index = j;
+//                         break;
+//                     }
+
+//                     if(k > far)
+//                     {
+//                         far = k;
+//                         index = j;
+//                     }
+//                 }
+
+//                 if(index == -1)
+//                     index = 0;
+
+//                 frame.erase(frame.begin() + index);
+//             }
+
+//             frame.push_back(pages[i]);
+//         }
+
+//         for(int k = 0; k < frame.size(); k++)
+//             cout << frame[k] << " ";
+//         cout << endl;
+//     }
+
+//     cout << "page fault " << pagefault << endl;
+// }
+
+
+
+
+
 #include <iostream>
 #include <vector>
 #include <algorithm>
